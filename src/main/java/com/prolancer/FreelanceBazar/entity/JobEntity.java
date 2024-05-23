@@ -1,6 +1,7 @@
 package com.prolancer.FreelanceBazar.entity;
 
 import com.prolancer.FreelanceBazar.entity.enums.JobStatus;
+import com.prolancer.FreelanceBazar.entity.enums.JobType;
 import com.prolancer.FreelanceBazar.entity.template.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -28,6 +29,8 @@ public class JobEntity extends BaseEntity {
     private Company company;
     @Enumerated(EnumType.STRING)
     private JobStatus jobStatus;
+    @Enumerated(EnumType.STRING)
+    private JobType jobType;
     @JoinTable(
             name = "job_skill",
             joinColumns = @JoinColumn(name = "job_id"),

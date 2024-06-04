@@ -13,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Repository
 public class UserRepositoryImpl implements UserCompositeRepository {
@@ -36,8 +37,15 @@ public class UserRepositoryImpl implements UserCompositeRepository {
 
         Long totalElements = countQuery.getSingleResult();
 
+        List<UserResponse> responseData = query.getResultList().stream().map(user -> UserResponse.builder()
+                .firstname(user.getFirstname())
+                .lastname(user.getLastname())
+                .roles(user.getRoles().stream()
+                        .map(role -> role.getRoleName().name()).toList())
+                .build()).toList();
+
         ResponsePageImpl<UserResponse> response = new ResponsePageImpl<>();
-        response.setElements(new ArrayList<>());
+        response.setElements(responseData);
         response.setTotalElements(totalElements);
 
         return new ResponsePageImpl<>();

@@ -9,6 +9,7 @@ import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Getter
@@ -31,6 +32,11 @@ public class JobEntity extends BaseEntity {
     private JobStatus jobStatus;
     @Enumerated(EnumType.STRING)
     private JobType jobType;
+
+    private BigDecimal fixedPrice;
+    private BigDecimal minPrice;
+    private BigDecimal maxPrice;
+
     @JoinTable(
             name = "job_skill",
             joinColumns = @JoinColumn(name = "job_id"),

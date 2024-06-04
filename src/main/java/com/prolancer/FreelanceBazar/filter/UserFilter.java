@@ -10,13 +10,12 @@ import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
 
 
-
 @Getter
 @Setter
 @ApiModel(description = "Параметры фильтра")
 @ToString(onlyExplicitlyIncluded = true, doNotUseGetters = true)
-public class UserFilter extends PageFilter{
-        @ApiModelProperty(value = "The Search Key filter")
+public class UserFilter extends PageFilter {
+    @ApiModelProperty(value = "The Search Key filter")
     @ToString.Include
     private String search = "";
 
@@ -29,5 +28,4 @@ public class UserFilter extends PageFilter{
     public String getSearchForQuery() {
         return StringUtils.isNotEmpty(search) ? "%" + search.toLowerCase().replace("_", "\\_") + "%" : search;
     }
-
 }

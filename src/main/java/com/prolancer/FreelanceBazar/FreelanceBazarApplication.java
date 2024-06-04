@@ -12,7 +12,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @EnableJpaAuditing(auditorAwareRef = "securityAuditorAware")
 @SpringBootApplication
 @EnableJpaRepositories(repositoryBaseClass = BaseRepositoryImpl.class)
-public class FreelanceBazarApplication {
+public class FreelanceBazarApplication  {
     public static void main(String[] args) {
         SpringApplication.run(FreelanceBazarApplication.class, args);
     }

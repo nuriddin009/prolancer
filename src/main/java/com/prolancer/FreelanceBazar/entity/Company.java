@@ -1,6 +1,7 @@
 package com.prolancer.FreelanceBazar.entity;
 
 import com.prolancer.FreelanceBazar.entity.template.BaseEntity;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
@@ -15,9 +16,10 @@ import org.hibernate.annotations.SQLRestriction;
 @NoArgsConstructor
 @Entity
 public class Company extends BaseEntity {
-
+    @Column(nullable = false)
     private String companyName;
     private String location;
 
-
+    private double longitude;
+    private double latitude;
 }

@@ -22,7 +22,7 @@ import java.util.List;
 @Setter
 @ToString(onlyExplicitlyIncluded = true, doNotUseGetters = true)
 @ApiModel(description = "Filter options")
-public class  PageFilter implements Serializable {
+public class PageFilter implements Serializable {
     @ApiModelProperty(value = "The page number, by default it is set to 0")
     @Min(value = 0, message = "Page number cannot be smaller than 0")
     @ToString.Include
@@ -46,7 +46,7 @@ public class  PageFilter implements Serializable {
         final Sort sort;
         if (CollectionUtils.isEmpty(this.sort)) {
             sort = Sort.unsorted();
-        } else {
+        }else {
             final List<Sort.Order> orders = new ArrayList<>(this.sort.size());
             for (String sortParam : this.sort) {
                 orders.add(sortParam.startsWith("-")
@@ -61,7 +61,7 @@ public class  PageFilter implements Serializable {
     @JsonIgnore
     @ApiModelProperty(hidden = true)
     public int getStart() {
-        return this.getPage() * this.getSize();
+        return this.getPage()*this.getSize();
     }
 
     public int getPage() {
@@ -75,7 +75,8 @@ public class  PageFilter implements Serializable {
     @JsonIgnore
     @ApiModelProperty(hidden = true)
     public Sort getOrderedSortBy() {
-        return sortOrder.equals(SortTypeEnum.asc) ? Sort.by(orderBy).ascending() : Sort.by(orderBy).descending();
+        return sortOrder.equals(SortTypeEnum.asc) ? Sort.by(this.orderBy).ascending()
+                : Sort.by(this.orderBy).descending();
     }
 
     @JsonIgnore

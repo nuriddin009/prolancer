@@ -10,12 +10,13 @@ import org.hibernate.annotations.SQLRestriction;
 @Getter
 @Setter
 @Builder
-@SQLDelete(sql = "update skill set deleted=true where id=?")
+@SQLDelete(sql = "update message set deleted=true where id=?")
 @SQLRestriction(value = "deleted=false")
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Skill extends BaseEntity {
-    @Column(length = 64, nullable = false)
-    private String skillName;
+public class Message extends BaseEntity {
+    @Column(columnDefinition = "text")
+    private String text;
+
 }

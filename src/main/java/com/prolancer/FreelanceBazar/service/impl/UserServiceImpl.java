@@ -2,10 +2,13 @@ package com.prolancer.FreelanceBazar.service.impl;
 
 import com.prolancer.FreelanceBazar.entity.User;
 import com.prolancer.FreelanceBazar.exceptions.PasswordNotMatchedException;
+import com.prolancer.FreelanceBazar.filter.UserFilter;
 import com.prolancer.FreelanceBazar.payload.model.ApiResponse;
 import com.prolancer.FreelanceBazar.payload.request.ChangePasswordRequest;
 import com.prolancer.FreelanceBazar.payload.response.GetMeResponse;
+import com.prolancer.FreelanceBazar.payload.response.UserResponse;
 import com.prolancer.FreelanceBazar.repository.UserRepository;
+import com.prolancer.FreelanceBazar.repository.page.ResponsePage;
 import com.prolancer.FreelanceBazar.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -45,5 +48,11 @@ public class UserServiceImpl implements UserService {
                 .email(user.getEmail())
                 .roles(roles)
                 .build(), user.getFirstname());
+    }
+
+    @Override
+    public ApiResponse getUsers(UserFilter filter) {
+        ResponsePage<UserResponse> usersList = userRepository.findAllByFilter(filter);
+        return ApiResponse.successResponse(usersList, "Users list");
     }
 }

@@ -19,8 +19,6 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Entity
 public class Proposal extends BaseEntity {
-
-
     @ManyToOne(fetch = FetchType.LAZY)
     private Freelancer freelancer;
     @Positive
@@ -29,5 +27,4 @@ public class Proposal extends BaseEntity {
     private ProposalStatus proposalStatus;
     @Column(columnDefinition = "text")
     private String clientComment;
-
 }

@@ -1,6 +1,6 @@
 package com.prolancer.FreelanceBazar.repository;
 
-import com.prolancer.FreelanceBazar.entity.Proposal;
+import com.prolancer.FreelanceBazar.entity.JobProposal;
 
-public interface ProposalRepository extends BaseRepository<Proposal>{
+public interface ProposalRepository extends BaseRepository<JobProposal>{
 }

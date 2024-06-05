@@ -12,19 +12,23 @@ import java.math.BigDecimal;
 
 @Getter
 @Setter
-@SQLDelete(sql = "update proposal set deleted=true where id=?")
+@SQLDelete(sql = "update job_proposal set deleted=true where id=?")
 @SQLRestriction(value = "deleted=false")
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Proposal extends BaseEntity {
+public class JobProposal extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
-    private Freelancer freelancer;
-    @Positive
-    private BigDecimal paymentAmount;
+    @JoinColumn(name = "freelancer_id", nullable = false)
+    private User freelancer;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "job_id", nullable = false)
+    private JobEntity job;
     @Enumerated(EnumType.STRING)
     private ProposalStatus proposalStatus;
-    @Column(columnDefinition = "text")
-    private String clientComment;
+    @Column(length = 5000)
+    private String coverLetter;
+    @Column(nullable = false)
+    private Double proposedRate;
 }

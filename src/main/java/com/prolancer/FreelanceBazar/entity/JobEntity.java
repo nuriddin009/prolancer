@@ -23,8 +23,9 @@ import java.util.List;
 @Entity
 public class JobEntity extends BaseEntity {
 
+    @Column(nullable = false)
     private String title;
-    @Column(columnDefinition = "text")
+    @Column(length = 5000)
     private String description;
     @ManyToOne(fetch = FetchType.LAZY)
     private Company company;
@@ -32,10 +33,11 @@ public class JobEntity extends BaseEntity {
     private JobStatus jobStatus;
     @Enumerated(EnumType.STRING)
     private JobType jobType;
-
-    private BigDecimal fixedPrice;
-    private BigDecimal minPrice;
-    private BigDecimal maxPrice;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User client;
+    private Integer estimatedHours;
+    private Double hourlyRate;
+    private Double budget;
 
     @JoinTable(
             name = "job_skill",

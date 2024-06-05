@@ -30,16 +30,24 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
         body.put("errors", errors);
         return new ResponseEntity<>(body, headers, status);
     }
+
     @ExceptionHandler({PasswordNotMatchedException.class})
     public ResponseEntity<?> handlePasswordNotMatchedException(PasswordNotMatchedException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
+
     @ExceptionHandler({UserNotActiveException.class})
     public ResponseEntity<?> handleUserNotActiveException(UserNotActiveException ex) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ex.getMessage());
     }
+
     @ExceptionHandler({PasswordIncorrectException.class})
     public ResponseEntity<?> handlePasswordIncorrectException(PasswordIncorrectException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<?> handleResourceNotFoundException(ResourceNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
 }

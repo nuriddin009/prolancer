@@ -59,7 +59,7 @@ public class MailServiceImpl implements MailSendService {
         try {
             MimeMessage message = emailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, multipart, CharEncoding.UTF_8);
-            helper.setFrom("rdoston22@gmail.com");
+            helper.setFrom("inoyatovnuriddin007@gmail.com");
             helper.setTo(receiverEmail);
             helper.setSubject(subject);
             helper.setText(htmlContent, true);

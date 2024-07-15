@@ -1,7 +1,6 @@
 package com.prolancer.FreelanceBazar.filter;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.prolancer.FreelanceBazar.entity.enums.Status;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -18,10 +17,6 @@ public class ContractFilter extends PageFilter {
     @ApiModelProperty(value = "The Search Key filter")
     @ToString.Include
     private String search = "";
-
-    @ApiModelProperty("Status")
-    @ToString.Include
-    private Status status;
 
     @JsonIgnore
     @ApiModelProperty(hidden = true)

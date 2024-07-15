@@ -5,12 +5,17 @@ import com.prolancer.FreelanceBazar.filter.JobFilter;
 import com.prolancer.FreelanceBazar.payload.response.JobResponse;
 import com.prolancer.FreelanceBazar.repository.custom.JobCompositeRepository;
 import com.prolancer.FreelanceBazar.repository.page.ResponsePage;
+import com.prolancer.FreelanceBazar.utils.QueryUtils;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public class JobRepositoryImpl implements JobCompositeRepository {
@@ -28,10 +33,13 @@ public class JobRepositoryImpl implements JobCompositeRepository {
 
 
         if (hasSearch) {
-            sql.append(" ");
+            sql.append(" where t.deleted=false ");
         }
 
+
         String countSql = sql.toString().replace("select t", "select count(t)");
+
+        QueryUtils.append(isSorted, filter, sql);
 
         TypedQuery<JobEntity> query = entityManager.createQuery(sql.toString(), JobEntity.class);
         TypedQuery<Long> countQuery = entityManager.createQuery(countSql, Long.class);
@@ -41,6 +49,6 @@ public class JobRepositoryImpl implements JobCompositeRepository {
             countQuery.setParameter("searchKey", filter.getSearchForQuery());
         }
 
-        return null;
+        return new PageImpl<>(query.getResultList(), filter.formPageable(), countQuery.getSingleResult());
     }
 }

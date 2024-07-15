@@ -19,4 +19,5 @@ public class Message extends BaseEntity {
     @Column(columnDefinition = "text")
     private String text;
 
+
 }

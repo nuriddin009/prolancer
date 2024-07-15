@@ -18,4 +18,5 @@ import org.hibernate.annotations.SQLRestriction;
 public class Skill extends BaseEntity {
     @Column(length = 64, nullable = false)
     private String skillName;
+
 }

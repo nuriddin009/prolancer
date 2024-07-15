@@ -1,6 +1,7 @@
 package com.prolancer.FreelanceBazar.service.impl;
 
 import com.prolancer.FreelanceBazar.entity.JobEntity;
+import com.prolancer.FreelanceBazar.entity.Skill;
 import com.prolancer.FreelanceBazar.entity.User;
 import com.prolancer.FreelanceBazar.entity.enums.JobStatus;
 import com.prolancer.FreelanceBazar.exceptions.ResourceNotFoundException;
@@ -13,6 +14,7 @@ import com.prolancer.FreelanceBazar.payload.request.UpdateJobRequest;
 import com.prolancer.FreelanceBazar.payload.response.JobResponse;
 import com.prolancer.FreelanceBazar.payload.response.SkillResponse;
 import com.prolancer.FreelanceBazar.repository.JobRepository;
+import com.prolancer.FreelanceBazar.repository.SkillRepository;
 import com.prolancer.FreelanceBazar.repository.page.RequestPage;
 import com.prolancer.FreelanceBazar.repository.page.RequestPageImpl;
 import com.prolancer.FreelanceBazar.repository.page.ResponsePage;
@@ -32,6 +34,7 @@ public class JobServiceImpl implements JobService {
     private final JobRepository jobRepository;
     private final JobMapper jobMapper;
     private final UserSession userSession;
+    private final SkillRepository skillRepository;
 
     @Override
     public ApiResponse getAllJobs(JobFilter filter) {
@@ -86,9 +89,14 @@ public class JobServiceImpl implements JobService {
         JobEntity job = jobMapper.toEntity(request);
         job.setJobStatus(JobStatus.OPEN);
         job.setClient(user);
+
+        List<Skill> skills = request.getSkillsId().stream()
+                .map(skillId -> skillRepository.findById(skillId).orElseThrow())
+                .toList();
+        job.setJobSkills(skills);
         jobRepository.save(job);
 
-
+        response.setMessage("New job created");
         return response;
     }
 
@@ -107,9 +115,10 @@ public class JobServiceImpl implements JobService {
     @Transactional
     @Override
     public ApiResponse deleteJob(UUID jobId) {
-        jobRepository.deleteById(jobId);
-
-        return ApiResponse.successResponse("Job deleted");
+        JobEntity job = jobRepository.findById(jobId).orElseThrow();
+        job.setJobStatus(JobStatus.CANCELLED);
+        jobRepository.save(job);
+        return ApiResponse.successResponse("Job cancelled");
     }
 
 

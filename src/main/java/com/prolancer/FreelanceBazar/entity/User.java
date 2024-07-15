@@ -33,11 +33,18 @@ public class User extends BaseEntity {
     private String password;
     @Enumerated(EnumType.STRING)
     private Status status;
+    private String code;
+    @Column(columnDefinition = "boolean default false")
+    private boolean forgotPassword;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private List<Role> roles;
+
+    public List<String> toRoleList() {
+        return this.roles.stream().map(Object::toString).toList();
+    }
 
 }

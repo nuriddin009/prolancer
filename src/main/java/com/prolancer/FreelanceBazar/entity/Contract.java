@@ -44,5 +44,4 @@ public class Contract extends BaseEntity {
     @Temporal(TemporalType.DATE)
     private Date endDate;
 
-
 }

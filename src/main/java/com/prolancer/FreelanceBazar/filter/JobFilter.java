@@ -39,5 +39,4 @@ public class JobFilter extends PageFilter {
     public String getSearchForQuery() {
         return StringUtils.isNotEmpty(search) ? "%" + search.toLowerCase().replace("_", "\\_") + "%" : search;
     }
-
 }

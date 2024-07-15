@@ -36,7 +36,7 @@ public class JobController {
         return ResponseEntity.ok(jobService.getAllJobs(filter));
     }
 
-    @GetMapping
+    @GetMapping("/byId")
     public HttpEntity<ApiResponse> getJobById(@RequestParam UUID jobId) {
         return ResponseEntity.ok(jobService.getJobById(jobId));
     }

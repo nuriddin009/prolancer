@@ -3,6 +3,7 @@ package com.prolancer.FreelanceBazar.service.impl;
 import com.prolancer.FreelanceBazar.entity.User;
 import com.prolancer.FreelanceBazar.exceptions.PasswordNotMatchedException;
 import com.prolancer.FreelanceBazar.filter.UserFilter;
+import com.prolancer.FreelanceBazar.mapper.UserMapper;
 import com.prolancer.FreelanceBazar.payload.model.ApiResponse;
 import com.prolancer.FreelanceBazar.payload.request.ChangePasswordRequest;
 import com.prolancer.FreelanceBazar.payload.response.GetMeResponse;
@@ -13,8 +14,10 @@ import com.prolancer.FreelanceBazar.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -25,7 +28,9 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserSession userSession;
     private final PasswordEncoder passwordEncoder;
+    private final UserMapper userMapper;
 
+    @Transactional
     @Override
     public ApiResponse changePassword(ChangePasswordRequest request) {
         User user = userSession.getUser();
@@ -43,13 +48,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public ApiResponse getMe(HttpServletRequest request) {
         User user = userSession.getUser();
-        List<String> roles = user.getRoles().stream().map(role -> role.getRoleName().name()).toList();
-        return ApiResponse.successResponse(GetMeResponse.builder()
-                .email(user.getEmail())
-                .roles(roles)
-                .build(), user.getFirstname());
+        return ApiResponse.successResponse(userMapper.toResponse(user), "ok");
     }
 
+    @Cacheable(cacheNames = "users_list")
     @Override
     public ApiResponse getUsers(UserFilter filter) {
         ResponsePage<UserResponse> usersList = userRepository.findAllByFilter(filter);

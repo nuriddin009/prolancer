@@ -15,5 +15,4 @@ public class RequestPageImpl implements RequestPage {
     private int pageLimit;
     private int startingIndex;
 
-
 }

@@ -31,15 +31,12 @@ public class PageFilter implements Serializable {
     @Min(value = 0, message = "Page size cannot be smaller than 0")
     @ToString.Include
     private Integer size = 200;
-
     @ApiModelProperty(value = "The Ordering column")
     @ToString.Include
     private String orderBy = "id";
-
     @ApiModelProperty(value = "The order of sorting, available values are 'asc' and 'desc'")
     @ToString.Include
     private SortTypeEnum sortOrder = SortTypeEnum.desc;
-
     private List<String> sort = new ArrayList<>();
 
     public Pageable formPageable() {

@@ -7,6 +7,7 @@ import com.prolancer.FreelanceBazar.payload.request.ContractRequest;
 import com.prolancer.FreelanceBazar.service.ContractService;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +25,7 @@ public class ContractController {
         return ResponseEntity.ok(service.getAllContracts(filter));
     }
 
-    @GetMapping
+    @GetMapping("/byId")
     public ResponseEntity<ApiResponse> getContractById(@RequestParam UUID contractId) {
         return ResponseEntity.ok(service.getContractById(contractId));
     }
@@ -41,7 +42,8 @@ public class ContractController {
 
     @DeleteMapping
     public ResponseEntity<ApiResponse> deleteContract(@RequestParam UUID contractId) {
-        return ResponseEntity.ok(service.deleteContract(contractId));
+        return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                .body(service.deleteContract(contractId));
     }
 
 

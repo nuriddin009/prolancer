@@ -19,7 +19,6 @@ public class Company extends BaseEntity {
     @Column(nullable = false)
     private String companyName;
     private String location;
-
     private double longitude;
     private double latitude;
 }

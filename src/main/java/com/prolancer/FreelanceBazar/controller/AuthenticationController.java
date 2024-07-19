@@ -39,7 +39,7 @@ public class AuthenticationController {
         return ResponseEntity.ok(authenticationService.confirmationCode(request));
     }
 
-    @PostMapping
+    @PostMapping("resend_code")
     public ResponseEntity<ApiResponse> resendCode(@RequestBody ResendRequest request) {
         return ResponseEntity.ok(authenticationService.resendCode(request));
     }

@@ -18,7 +18,6 @@ import com.prolancer.FreelanceBazar.repository.SkillRepository;
 import com.prolancer.FreelanceBazar.repository.page.RequestPage;
 import com.prolancer.FreelanceBazar.repository.page.RequestPageImpl;
 import com.prolancer.FreelanceBazar.repository.page.ResponsePage;
-import com.prolancer.FreelanceBazar.repository.page.ResponsePageImpl;
 import com.prolancer.FreelanceBazar.service.JobService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -40,7 +39,7 @@ public class JobServiceImpl implements JobService {
     public ApiResponse getAllJobs(JobFilter filter) {
 
         Page<JobEntity> jobPaged = jobRepository.findAllByFilter(filter);
-        List<JobResponse> responseData = jobPaged.getContent().stream()
+        List<JobResponse> responseData = jobPaged.getContent().parallelStream()
                 .map(job -> JobResponse.builder()
                         .title(job.getTitle())
                         .description(job.getDescription())
@@ -103,9 +102,9 @@ public class JobServiceImpl implements JobService {
     @Transactional
     @Override
     public ApiResponse updateJob(UpdateJobRequest request) {
-
         JobEntity job = jobRepository.findById(request.getJobId())
-                .orElseThrow(() -> new ResourceNotFoundException("job not found"));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("job not found for this id -> " + request.getJobId()));
         jobMapper.updateEntity(job, request);
         jobRepository.save(job);
 

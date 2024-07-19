@@ -7,9 +7,11 @@ import org.mapstruct.Mapper;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {UserMapper.class})
 public interface JobProposalMapper {
     JobProposal toEntity(ProposalRequest request);
+
     JobProposalResponse toResponse(JobProposal jobProposal);
+
     List<JobProposalResponse> toResList(List<JobProposal> proposals);
 }

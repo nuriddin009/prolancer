@@ -1,3 +1,5 @@
 spring:
+  application:
+    name: FreelanceBazar
   profiles:
     active: local

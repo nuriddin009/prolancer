@@ -1,7 +1,23 @@
 spring:
+  oauth2:
+      client:
+        registration:
+          google:
+            client-id: YOUR_GOOGLE_CLIENT_ID
+            client-secret: YOUR_GOOGLE_CLIENT_SECRET
+            scope: profile, email
+            redirect-uri: "{baseUrl}/login/oauth2/code/google"
+            client-authentication-method: post
+            authorization-grant-type: authorization_code
+        provider:
+          google:
+            authorization-uri: https://accounts.google.com/o/oauth2/auth
+            token-uri: https://oauth2.googleapis.com/token
+            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
+            user-name-attribute: sub
   rabbitmq:
     host: localhost
-    port: 15672
+    port: 5672
     username: guest
     password: guest
   datasource:
@@ -32,7 +48,9 @@ spring:
       expiration: 86400000 # a day
       refresh-token:
         expiration: 604800000 # 7 days
-#application:
+application:
+  stripe:
+    secret-key: sk_test_51OhoBvE4KEiOuc8x7kT2ivfdjlcm1FMZV8iw37pUKO93w7AwKYBlb9wbtSNrcIfiUxsjfwjEXNq0y1sjvSWBtXoZ00m64ZMlZu
 #  minio:
 #    applicationName: online-banking
 #    host: http://localhost:9001

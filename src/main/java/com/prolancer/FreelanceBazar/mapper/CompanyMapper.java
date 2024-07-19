@@ -5,7 +5,7 @@ import com.prolancer.FreelanceBazar.payload.request.CompanyRequest;
 import com.prolancer.FreelanceBazar.payload.response.CompanyResponse;
 import org.mapstruct.Mapper;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface CompanyMapper {
     Company toEntity(CompanyRequest request);
 

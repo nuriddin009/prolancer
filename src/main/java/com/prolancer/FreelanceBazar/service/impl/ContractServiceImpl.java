@@ -29,7 +29,7 @@ public class ContractServiceImpl implements ContractService {
     public ApiResponse getAllContracts(ContractFilter filter) {
 
 
-        return null;
+        return new ApiResponse();
     }
 
     @Override

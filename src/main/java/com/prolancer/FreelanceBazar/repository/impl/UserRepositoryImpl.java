@@ -13,10 +13,8 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -45,7 +43,7 @@ public class UserRepositoryImpl implements UserCompositeRepository {
 
         String countSql = sql.toString().replace("select t", "select count(t)");
 
-        QueryUtils.append(sorted, filter, sql);
+        QueryUtils.appendQuery(sorted, filter, sql);
 
         TypedQuery<User> query = entityManager.createQuery(sql.toString(), User.class);
         TypedQuery<Long> countQuery = entityManager.createQuery(countSql, Long.class);

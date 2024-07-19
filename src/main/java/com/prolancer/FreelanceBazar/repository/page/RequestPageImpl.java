@@ -10,9 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RequestPageImpl implements RequestPage {
-
     private int pageNumber;
     private int pageLimit;
     private int startingIndex;
-
 }

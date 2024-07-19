@@ -8,6 +8,7 @@ import com.prolancer.FreelanceBazar.payload.request.SkillRequest;
 import com.prolancer.FreelanceBazar.payload.response.SkillResponse;
 import com.prolancer.FreelanceBazar.repository.SkillRepository;
 import com.prolancer.FreelanceBazar.service.SkillService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +29,8 @@ public class SkillServiceImpl implements SkillService {
     @Transactional
     @Override
     public ApiResponse updateSkill(UUID id, SkillRequest skillDetails) {
-        Skill skill = skillRepository.findById(id).orElseThrow();
+        Skill skill = skillRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Skill not found for this id -> " + id));
         skillMapper.updateEntity(skill, skillDetails);
         return ApiResponse.successResponse("Skill updated");
     }
@@ -36,7 +38,7 @@ public class SkillServiceImpl implements SkillService {
     @Override
     public ApiResponse getSkillById(UUID id) {
         Skill skill = skillRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Skill not found for this id->" + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Skill not found for this id -> " + id));
         SkillResponse response = skillMapper.toResponse(skill);
         return ApiResponse.successResponse(response, "Skill");
     }

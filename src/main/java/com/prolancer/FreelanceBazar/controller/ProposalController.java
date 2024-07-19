@@ -3,6 +3,7 @@ package com.prolancer.FreelanceBazar.controller;
 import com.prolancer.FreelanceBazar.payload.model.ApiResponse;
 import com.prolancer.FreelanceBazar.payload.model.BaseResponse;
 import com.prolancer.FreelanceBazar.payload.request.ProposalRequest;
+import com.prolancer.FreelanceBazar.payload.request.UpdateProposalRequest;
 import com.prolancer.FreelanceBazar.service.ProposalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -34,5 +35,10 @@ public class ProposalController {
         response = service.createProposal(request, response);
         HttpStatus status = response.getSuccess() ? HttpStatus.CREATED : HttpStatus.INTERNAL_SERVER_ERROR;
         return new ResponseEntity<>(response, status);
+    }
+
+    @PatchMapping("{proposalId}")
+    public ResponseEntity<?> changeProposalStatus(@PathVariable UUID proposalId, @RequestBody UpdateProposalRequest request) {
+        return service.changeProposalStatus(proposalId, request);
     }
 }

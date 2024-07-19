@@ -34,6 +34,8 @@ public class JobFilter extends PageFilter {
     @ToString.Include
     private Double maxPrice;
 
+    
+
     @JsonIgnore
     @ApiModelProperty(hidden = true)
     public String getSearchForQuery() {

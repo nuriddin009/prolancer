@@ -10,7 +10,6 @@ import jakarta.persistence.TypedQuery;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -31,7 +30,8 @@ public class PaymentRepositoryImpl implements CustomPaymentRepository {
         String countSql = sql.toString().replace("select t", "select count(t)");
 
 
-        QueryUtils.append(sorted, filter, sql);
+        QueryUtils.appendQuery(sorted, filter, sql);
+
 
         TypedQuery<Payment> query = entityManager.createQuery(sql.toString(), Payment.class);
         TypedQuery<Long> countQuery = entityManager.createQuery(countSql, Long.class);

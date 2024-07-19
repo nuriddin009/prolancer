@@ -17,6 +17,7 @@ import com.prolancer.FreelanceBazar.repository.RoleRepository;
 import com.prolancer.FreelanceBazar.repository.UserRepository;
 import com.prolancer.FreelanceBazar.security.JwtService;
 import com.prolancer.FreelanceBazar.service.AuthenticationService;
+import com.prolancer.FreelanceBazar.utils.DateUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -26,6 +27,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -91,12 +95,24 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public ApiResponse confirmationCode(ConfirmationRequest request) {
 
         User user = userRepository.findByEmail(request.getEmail()).orElseThrow();
-        String code = getRandomCode();
-        user.setCode(code);
+
+        Instant instant = user.getUpdatedAt().atZone(ZoneId.systemDefault()).toInstant();
+
+        if (DateUtils.isExpirationCode(Date.from(instant)))
+            throw new IllegalArgumentException("Code was expired");
+
+        if (!user.getCode().equals(request.getCode()))
+            throw new IllegalArgumentException("Confirmation code is wrong");
+
+        user.setCode(null);
+
+        if (!request.isForgotPassword()) {
+            user.setStatus(Status.ACTIVE);
+        }else user.setForgotPassword(false);
 
         userRepository.save(user);
 
-        return new ApiResponse();
+        return ApiResponse.successResponse("Congratulations you have successfully login");
     }
 
     @Override

@@ -6,7 +6,7 @@ import org.springframework.data.domain.Sort;
 public class QueryUtils {
 
 
-    public static void append(boolean sorted, PageFilter filter, StringBuilder sql) {
+    public static void appendQuery(boolean sorted, PageFilter filter, StringBuilder sql) {
         sql.append(" order by ");
         if (sorted) {
             for (Sort.Order order : filter.formPageable().getSort()) {

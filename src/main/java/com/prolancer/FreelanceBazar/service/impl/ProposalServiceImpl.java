@@ -3,11 +3,13 @@ package com.prolancer.FreelanceBazar.service.impl;
 import com.prolancer.FreelanceBazar.entity.JobEntity;
 import com.prolancer.FreelanceBazar.entity.JobProposal;
 import com.prolancer.FreelanceBazar.entity.Skill;
+import com.prolancer.FreelanceBazar.entity.User;
 import com.prolancer.FreelanceBazar.exceptions.ResourceNotFoundException;
 import com.prolancer.FreelanceBazar.mapper.JobProposalMapper;
 import com.prolancer.FreelanceBazar.payload.model.ApiResponse;
 import com.prolancer.FreelanceBazar.payload.model.BaseResponse;
 import com.prolancer.FreelanceBazar.payload.request.ProposalRequest;
+import com.prolancer.FreelanceBazar.payload.request.UpdateProposalRequest;
 import com.prolancer.FreelanceBazar.payload.response.JobProposalResponse;
 import com.prolancer.FreelanceBazar.repository.JobRepository;
 import com.prolancer.FreelanceBazar.repository.ProposalRepository;
@@ -16,6 +18,7 @@ import com.prolancer.FreelanceBazar.service.ProposalService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,7 +38,6 @@ public class ProposalServiceImpl implements ProposalService {
 
     @Override
     public ApiResponse getProposalByJobId(UUID jobId) {
-//        JobEntity job = jobRepository.findById(jobId).orElseThrow();
         List<JobProposal> jobProposalList = proposalRepository.findAllByJobId(jobId);
         List<JobProposalResponse> resList = proposalMapper.toResList(jobProposalList);
         return new ApiResponse(resList, true);
@@ -51,6 +53,10 @@ public class ProposalServiceImpl implements ProposalService {
     @Override
     public BaseResponse<?> createProposal(ProposalRequest request, BaseResponse<?> response) {
 
+        User user = userSession.getUser();
+
+
+
         JobEntity job = jobRepository.findById(request.getJobId())
                 .orElseThrow(() -> new EntityNotFoundException("Job not found for this id -> " + request.getJobId()));
 
@@ -65,5 +71,20 @@ public class ProposalServiceImpl implements ProposalService {
         proposalRepository.save(jobProposal);
 
         return response;
+    }
+
+    @Override
+    public ResponseEntity<?> changeProposalStatus(UUID proposalId, UpdateProposalRequest request) {
+
+        JobProposal jobProposal = proposalRepository.findById(proposalId).orElseThrow();
+        jobProposal.setProposalStatus(request.getStatus());
+        proposalRepository.save(jobProposal);
+
+
+
+
+
+
+        return ResponseEntity.noContent().build();
     }
 }
